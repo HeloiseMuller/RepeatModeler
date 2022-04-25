@@ -284,7 +284,7 @@ from Genbank ( approx 11MB ) into a file called elephant.fa.
    
   `awk '/^>/ {print($0)}; /^[^>]/ {print(toupper($0))}' genome.fa > genome_up.fa`
    
-   If no LTR were retrieved with the LTRPipeline, no need to go further. One can simply used the outputs of RepeatModeler.
+   If no LTR were retrieved with the LTRPipeline, no need to go further. One can simply use the outputs of RepeatModeler.
    Otherwise, run the script `ReSartLTRStruct.pl` as follow:
    
    `perl ReSartLTRStruct.pl -RRDir RM_ -LTRDir LTR_ -database database -o outputDirectory`
@@ -313,7 +313,7 @@ Caveats
     of the genome sampled while avoiding rediscovery of families.
 
   Please see the RELEASE-NOTES file for more details.
-
+To note, there are warnings if some 
 
 RepeatModeler Statistics
 ------------------------
