@@ -22,12 +22,6 @@ my $dirLTR = abs_path($options{'LTRDir'});
 my $genomeDB = $options{'database'};
 my $out = $options{'o'};
 
-#I need this funciton:
-sub log_print {
- my $string = shift;
- print "$string";
- print $LOG "$string";
-}
 
 # 1. Combine results from both pipelines into a file
 system(
@@ -218,14 +212,11 @@ if ( -s "$dirLTR/cd-hit-out.clstr" ) {
         }
         close IN;
         close OUT;
-        #### 1st log_print work but not the second
-        log_print "       - Removed "
-            . scalar( keys( %redundant_families ) )
-            . " redundant LTR families.\n";
-        #log_print "       - Final family count = "
-        #    . (
-        #    ( $rrFamCnt + $ltrFamCnt ) - scalar( keys( %redundant_families ) ) )
-        #    . "\n";
+
+        my $removed = scalar( keys( %redundant_families ) );
+        print "Removed %removed redundant LTR families.\n";
+        my $count = ( $rrFamCnt + $ltrFamCnt ) - scalar( keys( %redundant_families ) );
+        print "Final family count = $count\n"
       }
 
   else {
