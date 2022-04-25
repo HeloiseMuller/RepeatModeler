@@ -1,5 +1,22 @@
 #!/usr/bin/perl
 
+#Arguments
+my @getopt_args = ('-help',
+                    '-RRDir=s',
+                    '-LTRDir=s',
+                    '-database=s',
+);
+
+my %options = ();
+Getopt::Long::config( "noignorecase", "bundling_override" );
+unless ( GetOptions( \%options, @getopt_args ) ) {
+  usage();
+}
+
+my $dirRR =  abs_path($options{'RRDir'});
+my $dirLTR = abs_path($options{'LTRDir'});
+my $genomeDB = $options{'database'};
+
 #I need this funciton:
 sub log_print {
  my $string = shift;
@@ -7,6 +24,20 @@ sub log_print {
  print $LOG "$string";
 }
 
+# 1. Combine results from both pipelines into a file
+system(
+"cat $dirLTR/families.fa $dirRR/consensi.fa > $dirLTR/combined.fa" );
+      system(
+"cat $dirLTR/tmpInputSeq-ltrs.stk $dirRR/families.stk > $dirLTR/combined.stk"
+      );
+      
+# 2. Cluster results
+my $cmd =
+ "cd-hit-est -aS 0.8 -c 0.8 -g 1 -G 0 -A 80 -M 10000 "
+ . "-i $dirLTR/combined.fa -o $dirLTR/cd-hit-out"
+ . "> $dirLTR/cd-hit-stdout 2>&1";
+system( $cmd);
+      
 # 3. Process clusters and remove redundancy
 my %redundant_families;
 my %putative_subfamilies;
@@ -93,10 +124,8 @@ if ( -s "cd-hit-out.clstr" ) {
         # TODO: Do we really want to keep this?
         #unlink("cd-hit-out.clstr" );
       }
-      print $rrFamCnt\n;
-      print $ltrFamCnt\n; #THose two print work, so why log_print does not work of ltreFamCnt
-      log_print "       - $rrFamCnt RepeatScout/RECON families\n";
-      log_print "       - $ltrFamCnt LTRPipeline families\n";
+      print "$rrFamCnt RepeatScout/RECON families\n";
+      print "$ltrFamCnt LTRPipeline families\n"; 
       if ( keys( %redundant_families ) ) {
         system(
                "mv consensi.fa consensi.fa.recon_rscout_only" );
@@ -196,6 +225,6 @@ if ( -s "cd-hit-out.clstr" ) {
 
   else {
     log_print
-"\nWARNING: Could not create input file for LTRPipeline from $genomeDB! Continuing using\nresults from RepeatScout/RECON pipeline only.\n";
+"\nWARNING: Could not create input file for LTRPipeline from $genomeDB!\n";
   }
   log_print "LTRPipeline Time: " . elapsedTime( 1 ) . "\n";
