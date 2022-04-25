@@ -8,6 +8,7 @@ my @getopt_args = ('-help',
                     '-RRDir=s',
                     '-LTRDir=s',
                     '-database=s',
+                    '-o=s'
 );
 
 my %options = ();
@@ -19,6 +20,7 @@ unless ( GetOptions( \%options, @getopt_args ) ) {
 my $dirRR =  abs_path($options{'RRDir'});
 my $dirLTR = abs_path($options{'LTRDir'});
 my $genomeDB = $options{'database'};
+my $out = $options{'o'};
 
 #I need this funciton:
 sub log_print {
@@ -46,8 +48,8 @@ my %redundant_families;
 my %putative_subfamilies;
 my $ltrFamCnt = 0;
 my $rrFamCnt  = 0;
-if ( -s "cd-hit-out.clstr" ) {
-  open IN, "<cd-hit-out.clstr"
+if ( -s "$dirLTR/cd-hit-out.clstr" ) {
+  open IN, "<$dirLTR/cd-hit-out.clstr"
     or die
 "RepeatModeler: Could not open cd-hit-out.clstr for reading!\n";
   my @cluster = ();
@@ -131,14 +133,14 @@ if ( -s "cd-hit-out.clstr" ) {
       print "$ltrFamCnt LTRPipeline families\n"; 
       if ( keys( %redundant_families ) ) {
         system(
-               "mv consensi.fa consensi.fa.recon_rscout_only" );
-        system( "mv combined.fa consensi.fa.with_redundancy" );
+               "mv $dirLTR/consensi.fa $dirLTR/consensi.fa.recon_rscout_only" );
+        system( "$dirLTR/mv combined.fa $dirLTR/consensi.fa.with_redundancy" );
 
         # Filter consensi.fa and families.stk
-        open IN, "consensi.fa.with_redundancy"
+        open IN, "$dirLTR/consensi.fa.with_redundancy"
             or die
 "RepeatModeler: Could not open consensi.fa.with_redundancy for reading";
-        open OUT, ">consensi.fa"
+        open OUT, ">$dirLTR/consensi.fa"
             or die
             "RepeatModeler: Could not open consensi.fa for writing";
         my $id;
@@ -174,13 +176,13 @@ if ( -s "cd-hit-out.clstr" ) {
         close IN;
         close OUT;
         system(
-             "mv families.stk families.stk.recon_rscout_only" );
+             "mv $dirLTR/families.stk $dirLTR/families.stk.recon_rscout_only" );
         system(
-               "mv combined.stk families.stk.with_redundancy" );
-        open IN, "<families.stk.with_redundancy"
+               "mv $dirLTR/combined.stk $dirLTR/families.stk.with_redundancy" );
+        open IN, "<$dirLTR/families.stk.with_redundancy"
             or die
 "RepeatModeler: Could not open families.stk.with_redundancy for reading";
-        open OUT, ">families.stk"
+        open OUT, ">$dirLTR/families.stk"
             or die
             "RepeatModeler: Could not open families.stk for writing";
         $id   = "";
@@ -236,9 +238,9 @@ print "Working directory:  $tmpDir\n";
 print "may be deleted unless there were problems with the run.\n";
 
 if ( $numModels > 0 ) {
-  system( "cp $dirLTR/consensi.fa.classified $genomeDB-families.fa" )
+  system( "cp $dirLTR/consensi.fa.classified $out/$genomeDB-families.fa" )
       if ( -s "$dirLTR/consensi.fa.classified" );
-  system( "cp $dirLTR/families-classified.stk $genomeDB-families.stk" )
+  system( "cp $dirLTR/families-classified.stk $out/$genomeDB-families.stk" )
       if ( -s "$dirLTR/families-classified.stk" );
   print "\nThe results have been saved to:\n";
   print
