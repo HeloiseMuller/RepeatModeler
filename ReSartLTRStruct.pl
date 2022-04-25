@@ -134,7 +134,7 @@ if ( -s "$dirLTR/cd-hit-out.clstr" ) {
       if ( keys( %redundant_families ) ) {
         system(
                "mv $dirRR/consensi.fa $dirLTR/consensi.fa.recon_rscout_only" );
-        system( "mv $dirLTR combined.fa $dirLTR/consensi.fa.with_redundancy" );
+        system( "mv $dirLTR/combined.fa $dirLTR/consensi.fa.with_redundancy" );
 
         # Filter consensi.fa and families.stk
         open IN, "$dirLTR/consensi.fa.with_redundancy"
