@@ -133,7 +133,7 @@ if ( -s "$dirLTR/cd-hit-out.clstr" ) {
       print "$ltrFamCnt LTRPipeline families\n"; 
       if ( keys( %redundant_families ) ) {
         system(
-               "mv $dirRR/consensi.fa $dirLTR/consensi.fa.recon_rscout_only" );
+               "cp $dirRR/consensi.fa $dirLTR/consensi.fa.recon_rscout_only" );
         system( "mv $dirLTR/combined.fa $dirLTR/consensi.fa.with_redundancy" );
 
         # Filter consensi.fa and families.stk
@@ -176,7 +176,7 @@ if ( -s "$dirLTR/cd-hit-out.clstr" ) {
         close IN;
         close OUT;
         system(
-             "mv $dirRR/families.stk $dirLTR/families.stk.recon_rscout_only" );
+             "cp $dirRR/families.stk $dirLTR/families.stk.recon_rscout_only" );
         system(
                "mv $dirLTR/combined.stk $dirLTR/families.stk.with_redundancy" );
         open IN, "<$dirLTR/families.stk.with_redundancy"
