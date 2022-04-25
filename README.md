@@ -284,8 +284,13 @@ from Genbank ( approx 11MB ) into a file called elephant.fa.
    
   `awk '/^>/ {print($0)}; /^[^>]/ {print(toupper($0))}' genome.fa > genome_up.fa`
    
-   Once the LTRPipeline is done, run the script `ReSartLTRStruct.pl` as follow:
-   `perl ReSartLTRStruct.pl -RRDir RM_ -LTRDir LTR_ -database database`
+   If no LTR were retrieved with the LTRPipeline, no need to go further. One can simply used the outputs of RepeatModeler.
+   Otherwise, run the script `ReSartLTRStruct.pl` as follow:
+   
+   `perl ReSartLTRStruct.pl -RRDir RM_ -LTRDir LTR_ -database database -o outputDirectory`
+   
+   -RRDir gives the directory where the consensi.fa and families.stk files from the RepeatScout/Recon pipeline are located. 
+   -LTRDir  gives the directory where the  families.fa and families.stk files from the LTRPipeline are located. Remporary files will be saved in this directory. -o gives the location to save to the final outputs.
    
    
 
