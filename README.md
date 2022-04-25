@@ -290,7 +290,7 @@ from Genbank ( approx 11MB ) into a file called elephant.fa.
    `perl ReSartLTRStruct.pl -RRDir RM_ -LTRDir LTR_ -database database -o outputDirectory`
    
    -RRDir gives the directory where the consensi.fa and families.stk files from the RepeatScout/Recon pipeline are located. 
-   -LTRDir  gives the directory where the  families.fa and families.stk files from the LTRPipeline are located. Remporary files will be saved in this directory. -o gives the location to save to the final outputs.
+   -LTRDir gives the directory where the  families.fa and families.stk files from the LTRPipeline are located. Temporary files will be saved in this directory. -o gives the location to save the final outputs.
    
    
 
