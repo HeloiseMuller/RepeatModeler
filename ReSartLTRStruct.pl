@@ -28,7 +28,7 @@ sub log_print {
 system(
 "cat $dirLTR/families.fa $dirRR/consensi.fa > $dirLTR/combined.fa" );
       system(
-"cat $dirLTR/tmpInputSeq-ltrs.stk $dirRR/families.stk > $dirLTR/combined.stk"
+"cat $dirLTR/families.stk $dirRR/families.stk > $dirLTR/combined.stk"
       );
       
 # 2. Cluster results
@@ -228,3 +228,22 @@ if ( -s "cd-hit-out.clstr" ) {
 "\nWARNING: Could not create input file for LTRPipeline from $genomeDB!\n";
   }
   log_print "LTRPipeline Time: " . elapsedTime( 1 ) . "\n";
+  
+print "Working directory:  $tmpDir\n";
+print "may be deleted unless there were problems with the run.\n";
+
+if ( $numModels > 0 ) {
+  system( "cp $dirLTR/consensi.fa.classified $genomeDB-families.fa" )
+      if ( -s "$dirLTR/consensi.fa.classified" );
+  system( "cp $dirLTR/families-classified.stk $genomeDB-families.stk" )
+      if ( -s "$dirLTR/families-classified.stk" );
+  print "\nThe results have been saved to:\n";
+  print
+"  $genomeDB-families.fa  - Consensus sequences for each family identified.\n";
+  print
+"  $genomeDB-families.stk - Seed alignments for each family identified.\n";
+}
+else {
+  print "No families identified.  Perhaps the database is too small\n";
+  print "or contains overly fragmented sequences.\n";
+}
