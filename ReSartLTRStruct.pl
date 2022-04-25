@@ -226,18 +226,13 @@ if ( -s "$dirLTR/cd-hit-out.clstr" ) {
 print "Working directory:  $dirLTR\n";
 print "may be deleted unless there were problems with the run.\n";
 
-if ( $numModels > 0 ) {
-  system("RepeatClassifier "
-          . "-consensi $dirLTR/consensi.fa -stockholm $dirLTR/families.stk" );
-  system( "cp $dirLTR/consensi.fa.classified $out/$genomeDB-families.fa" )
-      if ( -s "$dirLTR/consensi.fa.classified" );
-  system( "cp $dirLTR/families-classified.stk $out/$genomeDB-families.stk" )
-      if ( -s "$dirLTR/families-classified.stk" );
-  print "\nThe results have been saved to:\n";
-  print  "$genomeDB-families.fa  - Consensus sequences for each family identified.\n";
-  print "$genomeDB-families.stk - Seed alignments for each family identified.\n";
-}
-else {
-  print "No families identified.  Perhaps the database is too small\n";
-  print "or contains overly fragmented sequences.\n";
-}
+system("RepeatClassifier "
+  . "-consensi $dirLTR/consensi.fa -stockholm $dirLTR/families.stk" );
+system( "cp $dirLTR/consensi.fa.classified $out/$genomeDB-families.fa" )
+  if ( -s "$dirLTR/consensi.fa.classified" );
+system( "cp $dirLTR/families-classified.stk $out/$genomeDB-families.stk" )
+  if ( -s "$dirLTR/families-classified.stk" );
+print "\nThe results have been saved to:\n";
+print  "$genomeDB-families.fa  - Consensus sequences for each family identified.\n";
+print "$genomeDB-families.stk - Seed alignments for each family identified.\n";
+
