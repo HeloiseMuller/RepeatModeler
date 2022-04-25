@@ -220,10 +220,8 @@ if ( -s "$dirLTR/cd-hit-out.clstr" ) {
       }
 
   else {
-    log_print
-"\nWARNING: Could not create input file for LTRPipeline from $genomeDB!\n";
+    print "\nWARNING: Could not create input file for LTRPipeline from $genomeDB!\n";
   }
-  log_print "LTRPipeline Time: " . elapsedTime( 1 ) . "\n";
   
 print "Working directory:  $dirLTR\n";
 print "may be deleted unless there were problems with the run.\n";
@@ -234,10 +232,8 @@ if ( $numModels > 0 ) {
   system( "cp $dirLTR/families-classified.stk $out/$genomeDB-families.stk" )
       if ( -s "$dirLTR/families-classified.stk" );
   print "\nThe results have been saved to:\n";
-  print
-"  $genomeDB-families.fa  - Consensus sequences for each family identified.\n";
-  print
-"  $genomeDB-families.stk - Seed alignments for each family identified.\n";
+  print   "$genomeDB-families.fa  - Consensus sequences for each family identified.\n";
+  print "$genomeDB-families.stk - Seed alignments for each family identified.\n";
 }
 else {
   print "No families identified.  Perhaps the database is too small\n";
