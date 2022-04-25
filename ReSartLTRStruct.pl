@@ -214,7 +214,7 @@ if ( -s "$dirLTR/cd-hit-out.clstr" ) {
         close OUT;
 
         my $removed = scalar( keys( %redundant_families ) );
-        print "Removed %removed redundant LTR families.\n";
+        print "Removed $removed redundant LTR families.\n";
         my $count = ( $rrFamCnt + $ltrFamCnt ) - scalar( keys( %redundant_families ) );
         print "Final family count = $count\n"
       }
@@ -232,7 +232,7 @@ if ( $numModels > 0 ) {
   system( "cp $dirLTR/families-classified.stk $out/$genomeDB-families.stk" )
       if ( -s "$dirLTR/families-classified.stk" );
   print "\nThe results have been saved to:\n";
-  print   "$genomeDB-families.fa  - Consensus sequences for each family identified.\n";
+  print  "$genomeDB-families.fa  - Consensus sequences for each family identified.\n";
   print "$genomeDB-families.stk - Seed alignments for each family identified.\n";
 }
 else {
