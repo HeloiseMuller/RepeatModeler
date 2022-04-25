@@ -274,6 +274,20 @@ from Genbank ( approx 11MB ) into a file called elephant.fa.
   diretory ( i.e RM_<PID>.<DATE>/ ) where a previous run of
   RepeatModeler was working and it will automatically determine
   how to continue the analysis.
+   
+  However, this does not work if all the runs of Recon/RepeatScout worked, but not the LTRPipeline.
+  For this, run the module LTRPipine independendlty on the genome with:
+   
+  `LTRPipeline -debug genome.fa -ninja_dir /opt/NINJA-0.95-cluster_only/NINJA`
+   
+   To note, there are warnings if some nucleotides are in lower cases. One can run the following to turn everything into upper cases:
+   
+  `awk '/^>/ {print($0)}; /^[^>]/ {print(toupper($0))}' genome.fa > genome_up.fa`
+   
+   Once the LTRPipeline is done, run the script `ReSartLTRStruct.pl` as follow:
+   `perl ReSartLTRStruct.pl -RRDir RM_ -LTRDir LTR_`
+   
+   
 
 Caveats
 -------
