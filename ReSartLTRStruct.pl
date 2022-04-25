@@ -133,8 +133,8 @@ if ( -s "$dirLTR/cd-hit-out.clstr" ) {
       print "$ltrFamCnt LTRPipeline families\n"; 
       if ( keys( %redundant_families ) ) {
         system(
-               "mv $dirLTR/consensi.fa $dirLTR/consensi.fa.recon_rscout_only" );
-        system( "$dirLTR/mv combined.fa $dirLTR/consensi.fa.with_redundancy" );
+               "mv $dirRR/consensi.fa $dirLTR/consensi.fa.recon_rscout_only" );
+        system( "mv $dirLTR combined.fa $dirLTR/consensi.fa.with_redundancy" );
 
         # Filter consensi.fa and families.stk
         open IN, "$dirLTR/consensi.fa.with_redundancy"
@@ -176,7 +176,7 @@ if ( -s "$dirLTR/cd-hit-out.clstr" ) {
         close IN;
         close OUT;
         system(
-             "mv $dirLTR/families.stk $dirLTR/families.stk.recon_rscout_only" );
+             "mv $dirRR/families.stk $dirLTR/families.stk.recon_rscout_only" );
         system(
                "mv $dirLTR/combined.stk $dirLTR/families.stk.with_redundancy" );
         open IN, "<$dirLTR/families.stk.with_redundancy"
@@ -234,7 +234,7 @@ if ( -s "$dirLTR/cd-hit-out.clstr" ) {
   }
   log_print "LTRPipeline Time: " . elapsedTime( 1 ) . "\n";
   
-print "Working directory:  $tmpDir\n";
+print "Working directory:  $dirLTR\n";
 print "may be deleted unless there were problems with the run.\n";
 
 if ( $numModels > 0 ) {
