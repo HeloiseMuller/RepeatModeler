@@ -227,7 +227,7 @@ print "Working directory:  $dirLTR\n";
 print "may be deleted unless there were problems with the run.\n";
 
 system("RepeatClassifier "
-  . "-consensi $dirLTR/consensi.fa -stockholm $dirLTR/families.stk" );
+  . "-consensi $dirLTR/consensi.fa -stockholm $dirLTR/families.stk -pa 10" );
 system( "cp $dirLTR/consensi.fa.classified $out/$genomeDB-families.fa" )
   if ( -s "$dirLTR/consensi.fa.classified" );
 system( "cp $dirLTR/families-classified.stk $out/$genomeDB-families.stk" )
