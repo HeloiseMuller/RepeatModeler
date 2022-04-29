@@ -32,6 +32,9 @@ system( "mkdir -p $dirLTR" );
 #Run LTRPipeline
 system( "LTRPipeline -debug $genome -ninja_dir $ninjaDir -tmpdir $dirLTR" );
 
+#Continue only if LTRPipeline found something
+if ( -s "$dirLTR/LTR*/families.fa" ) {
+
 # 1. Combine results from both pipelines into a file
 system(
 "cat $dirLTR/LTR*/families.fa $dirRR/consensi.fa > $dirLTR/combined.fa" );
@@ -241,6 +244,19 @@ system( "cp $dirLTR/consensi.fa.classified $out/$genomeDB-families.fa" )
   if ( -s "$dirLTR/consensi.fa.classified" );
 system( "cp $dirLTR/families-classified.stk $out/$genomeDB-families.stk" )
   if ( -s "$dirLTR/families-classified.stk" );
+  
+  }
+  
+  #if no output with LTRPipeline, simply take RR as final output
+  else { 
+  system("RepeatClassifier "
+  . "-consensi $dirRR/consensi.fa -stockholm $dirRR/families.stk -pa 10" );
+  system( "cp $dirRR/consensi.fa.classified $out/$genomeDB-families.fa" )
+  if ( -s "$dirRR/consensi.fa.classified" );
+system( "cp $dirRR/families-classified.stk $out/$genomeDB-families.stk" )
+  if ( -s "$dirRR/families-classified.stk" );
+  }
+  
 print "\nThe results have been saved to:\n";
-print  "$genomeDB-families.fa  - Consensus sequences for each family identified.\n";
-print "$genomeDB-families.stk - Seed alignments for each family identified.\n";
+print  "$out/$genomeDB-families.fa  - Consensus sequences for each family identified.\n";
+print "$out/$genomeDB-families.stk - Seed alignments for each family identified.\n";
