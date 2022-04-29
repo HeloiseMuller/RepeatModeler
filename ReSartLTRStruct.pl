@@ -5,10 +5,12 @@ use Cwd qw(abs_path getcwd cwd);
 
 #Arguments
 my @getopt_args = ('-help',
+                    'i=s',
                     '-RRDir=s',
-                    '-LTRDir=s',
+                    '-LTRtmp=s',
                     '-database=s',
-                    '-o=s'
+                    '-o=s',
+                    'ninja_dir=s'
 );
 
 my %options = ();
@@ -17,24 +19,31 @@ unless ( GetOptions( \%options, @getopt_args ) ) {
   usage();
 }
 
+my $genome = $options{'i'};
 my $dirRR =  abs_path($options{'RRDir'});
-my $dirLTR = abs_path($options{'LTRDir'});
+my $dirLTR = abs_path($options{'LTRtmp'});
 my $genomeDB = $options{'database'};
 my $out = $options{'o'};
+my $ninjaDir =  $options{'ninja_dir'};
 
+#Create directory for tmp files
+system( "mkdir -p $dirLTR" );
+
+#Run LTRPipeline
+system( "LTRPipeline -debug $genome -ninja_dir $ninjaDir -tmpdir $dirLTR" );
 
 # 1. Combine results from both pipelines into a file
 system(
-"cat $dirLTR/families.fa $dirRR/consensi.fa > $dirLTR/combined.fa" );
-      system(
-"cat $dirLTR/families.stk $dirRR/families.stk > $dirLTR/combined.stk"
+"cat $dirLTR/LTR*/families.fa $dirRR/consensi.fa > $dirLTR/combined.fa" );
+system(
+"cat $dirLTR/LTR*/families.stk $dirRR/families.stk > $dirLTR/combined.stk"
       );
       
 # 2. Cluster results
 my $cmd =
  "cd-hit-est -aS 0.8 -c 0.8 -g 1 -G 0 -A 80 -M 10000 "
  . "-i $dirLTR/combined.fa -o $dirLTR/cd-hit-out"
- . "> $dirLTR/cd-hit-stdout 2>&1";
+ . ">$dirLTR/cd-hit-stdout 2>&1";
 system( $cmd);
       
 # 3. Process clusters and remove redundancy
@@ -235,4 +244,3 @@ system( "cp $dirLTR/families-classified.stk $out/$genomeDB-families.stk" )
 print "\nThe results have been saved to:\n";
 print  "$genomeDB-families.fa  - Consensus sequences for each family identified.\n";
 print "$genomeDB-families.stk - Seed alignments for each family identified.\n";
-
