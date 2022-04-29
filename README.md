@@ -276,22 +276,19 @@ from Genbank ( approx 11MB ) into a file called elephant.fa.
   how to continue the analysis.
    
   However, this does not work if all the runs of Recon/RepeatScout worked, but not the LTRPipeline.
-  For this, run the module LTRPipeline independently on the genome with:
+  For this, run the script ReSartLTRStruct:
    
-  `LTRPipeline -debug genome.fa -ninja_dir /opt/NINJA-0.95-cluster_only/NINJA`
+  `perl ReSartLTRStruct.pl -RRDir RM_ -LTRtmp LTR_ -database database -o outputDirectory -i genome.fa -ninja_dir /opt/NINJA-0.95-cluster_only/NINJA`
+   
+     
+   `-RRDir` gives the directory where the consensi.fa and families.stk files from the RepeatScout/Recon pipeline are located. 
+   `-LTRtmp` gives the directory where to save the temporatry files. It will be created if it does not exist. 
+   -o gives the location where to save the final outputs.
    
    To note, there are warnings if some nucleotides are in lower cases in the fasta. One can run the following to turn everything into upper cases before running LTRPipeline:
    
   `awk '/^>/ {print($0)}; /^[^>]/ {print(toupper($0))}' genome.fa > genome_up.fa`
-   
-   If no LTR were retrieved with the LTRPipeline, no need to go further. One can simply use the outputs of RepeatModeler.
-   Otherwise, run the script `ReSartLTRStruct.pl` as follow:
-   
-   `perl ReSartLTRStruct.pl -RRDir RM_ -LTRDir LTR_ -database database -o outputDirectory`
-   
-   -RRDir gives the directory where the consensi.fa and families.stk files from the RepeatScout/Recon pipeline are located. 
-   -LTRDir gives the directory where the  families.fa and families.stk files from the LTRPipeline are located. Temporary files will be saved in this directory. -o gives the location to save the final outputs.
-   
+ 
    
 
 Caveats
