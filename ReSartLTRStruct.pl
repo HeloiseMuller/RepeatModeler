@@ -236,8 +236,8 @@ if ( -s "$dirLTR/cd-hit-out.clstr" ) {
 
   else {
     #if no redundency, save the combined.fa 
-    system( "mv $dirLTR/combines.fa $dirLTR/consensis.fa" );
-    system ( "mv $dirLTR/combines.stk $dirLTR/families.stk" );
+    system( "mv $dirLTR/combined.fa $dirLTR/consensis.fa" );
+    system ( "mv $dirLTR/combined.stk $dirLTR/families.stk" );
     my $count = ( $rrFamCnt + $ltrFamCnt );
     print "No redundant LTR families.\n";
     print "Final family count = $count\n";
