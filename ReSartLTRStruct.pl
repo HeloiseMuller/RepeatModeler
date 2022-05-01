@@ -235,7 +235,12 @@ if ( -s "$dirLTR/cd-hit-out.clstr" ) {
       }
 
   else {
-    print "\nWARNING: Could not create input file for LTRPipeline from $genomeDB!\n";
+    #if no redundency, save the combined.fa 
+    system( "mv $dirLTR/combines.fa $dirLTR/consensis.fa" );
+    system ( "mv $dirLTR/combines.stk $dirLTR/families.stk" );
+    my $count = ( $rrFamCnt + $ltrFamCnt );
+    print "No redundant LTR families.\n";
+    print "Final family count = $count\n";
   }
   
 print "Working directory:  $dirLTR\n";
