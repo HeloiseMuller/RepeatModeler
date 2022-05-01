@@ -33,7 +33,10 @@ system( "mkdir -p $dirLTR" );
 system( "LTRPipeline -debug $genome -ninja_dir $ninjaDir -tmpdir $dirLTR" );
 
 #Continue only if LTRPipeline found something
-if ( -s "$dirLTR/LTR*/families.fa" ) {
+$check = qx(ls $dirLTR/ | grep LTR_ );
+chomp($check);
+
+if ( -s "$dirLTR/${check}/families.fa" ) {
 
 # 1. Combine results from both pipelines into a file
 system(
@@ -135,7 +138,7 @@ if ( -s "$dirLTR/cd-hit-out.clstr" ) {
         # TODO: Do we really want to keep this?
         #unlink("cd-hit-out.clstr" );
       }
-      print "$rrFamCnt RepeatScout/RECON families\n";
+      print "\n\n$rrFamCnt RepeatScout/RECON families\n";
       print "$ltrFamCnt LTRPipeline families\n"; 
       if ( keys( %redundant_families ) ) {
         system(
